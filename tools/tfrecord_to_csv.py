@@ -58,6 +58,10 @@ def read_tfrecords_and_make_csv(tfrecord_filename):
             wf.write('{},{},{}\n'.format(str(temp_id), str(id), '|'.join(labels)))
             succeed += 1
 
+    del temp_id_list
+    del id_url_list
+    del labels_list
+
     return succeed, error
 
 
