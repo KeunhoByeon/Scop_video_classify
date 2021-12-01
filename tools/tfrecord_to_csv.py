@@ -1,4 +1,3 @@
-import multiprocessing
 import os
 from concurrent.futures import ThreadPoolExecutor
 
@@ -47,8 +46,7 @@ def read_tfrecords_and_make_csv(tfrecord_filename):
         except Exception as e:
             error += 1
 
-    max_workers = multiprocessing.cpu_count()
-    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+    with ThreadPoolExecutor(max_workers=32) as pool:
         id_list = list(pool.map(get_id_from_url, id_url_list))
 
     with open(output_path, 'w') as wf:
