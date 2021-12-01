@@ -18,7 +18,7 @@ def run(args):
     labels = load_labels(args.labels)
 
     dataloader = VideoClassificationData()
-    video_data = dataloader(args.video)
+    video_data = dataloader(args.video, start_sec=0, sampling_rate=2, frames_per_second=30)
     inputs = [i.to(args.device)[None, ...] for i in video_data["video"]]
 
     preds = model(inputs)
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
     parser.add_argument('--model', default='model.pth', type=str, help='path to model')
     parser.add_argument('--labels', default='labels.csv', type=str, help='path to labels file')
-    parser.add_argument('--video', default='data/sample.mp4', type=str, help='path to video file')
+    parser.add_argument('--video', default='data/eating.mp4', type=str, help='path to video file')
     parser.add_argument('--device', default='cpu', type=str, help='cpu or cuda')
     args = parser.parse_args()
 
