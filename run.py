@@ -3,14 +3,13 @@ import argparse
 import torch
 
 from dataset import VideoClassificationData
-from utils import load_labels
+from utils import download_model, load_labels
 
 
 def run(args):
     if args.model is None:
-        import dill
-        model = torch.hub.load("facebookresearch/pytorchvideo", model="slowfast_r50", pretrained=True)
-        torch.save(model, 'model.pth', pickle_module=dill)
+        download_model()
+        args.model = 'model.pth'
 
     model = torch.load(args.model)
     model = model.to(args.device)
