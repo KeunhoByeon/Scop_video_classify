@@ -15,3 +15,11 @@ def load_labels(file_path):
             kinetics_id_to_classname[int(id)] = classname
 
     return kinetics_id_to_classname
+
+
+def get_topk_classes(preds, topk=5):
+    post_act = torch.nn.Softmax(dim=1)
+    preds = post_act(preds)
+    pred_classes = preds.topk(k=topk).indices
+
+    return pred_classes

@@ -3,7 +3,7 @@ import argparse
 import torch
 
 from dataset import VideoClassificationData
-from utils import download_model, load_labels
+from utils import download_model, load_labels, get_topk_classes
 
 
 def run(args):
@@ -15,19 +15,15 @@ def run(args):
     model = model.to(args.device)
     model = model.eval()
 
-    kinetics_id_to_classname = load_labels(args.labels)
+    labels = load_labels(args.labels)
 
     dataloader = VideoClassificationData()
-
     video_data = dataloader(args.video)
     inputs = [i.to(args.device)[None, ...] for i in video_data["video"]]
 
     preds = model(inputs)
-    post_act = torch.nn.Softmax(dim=1)
-    preds = post_act(preds)
-    pred_classes = preds.topk(k=5).indices
-
-    pred_class_names = [kinetics_id_to_classname[int(i)] for i in pred_classes[0]]
+    pred_classes = get_topk_classes(preds, topk=5)
+    pred_class_names = [labels[int(i)] for i in pred_classes[0]]
     print("Predicted labels: %s" % ", ".join(pred_class_names))
 
 
