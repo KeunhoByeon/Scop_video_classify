@@ -6,18 +6,12 @@ from torchvision.transforms._transforms_video import (CenterCropVideo, Normalize
 
 
 class PackPathway(torch.nn.Module):
-    """
-    Transform for converting video frames as a list of tensors.
-    """
-
     def __init__(self, alpha=4):
         super().__init__()
-
         self.alpha = alpha
 
     def forward(self, frames: torch.Tensor):
         fast_pathway = frames
-        # Perform temporal sampling from the fast pathway.
         slow_pathway = torch.index_select(frames, 1, torch.linspace(0, frames.shape[1] - 1, frames.shape[1] // self.alpha).long(), )
         frame_list = [slow_pathway, fast_pathway]
         return frame_list
@@ -50,11 +44,7 @@ class VideoClassificationData():
 
     def __call__(self, video_path):
         video = EncodedVideo.from_path(video_path)
-
-        # Load the desired clip
         video_data = video.get_clip(start_sec=self.start_sec, end_sec=self.end_sec)
-
-        # Apply a transform to normalize the video input
         video_data = self.transform(video_data)
 
         return video_data
