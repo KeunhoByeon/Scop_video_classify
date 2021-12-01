@@ -39,7 +39,14 @@ class VideoClassificationData():
         self.clip_duration = (self.num_frames * self.sampling_rate) / self.frames_per_second
         self.end_sec = self.start_sec + self.clip_duration
 
-        self.transform = ApplyTransformToKey(key="video", transform=Compose([UniformTemporalSubsample(self.num_frames), Lambda(lambda x: x / 255.0), NormalizeVideo(self.mean, self.std), ShortSideScale(size=self.side_size), CenterCropVideo(self.crop_size), PackPathway(alpha=self.alpha)]), )
+        applying_transforms = [UniformTemporalSubsample(self.num_frames),
+                               Lambda(lambda x: x / 255.0),
+                               NormalizeVideo(self.mean, self.std),
+                               ShortSideScale(size=self.side_size),
+                               CenterCropVideo(self.crop_size),
+                               PackPathway(alpha=self.alpha)]
+
+        self.transform = ApplyTransformToKey(key="video", transform=Compose(applying_transforms), )
 
     def __call__(self, video_path):
         video = EncodedVideo.from_path(video_path)
