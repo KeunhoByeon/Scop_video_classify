@@ -18,7 +18,7 @@ def read_tfrecords_and_make_csv(tfrecord_filename):
 
     wf = open(output_path, 'w')
 
-    record_iterator = tf.python.python_io.tf_record_iterator(path=tfrecord_filename)
+    record_iterator = tf.compat.v1.io.tf_record_iterator(path=tfrecord_filename)
     for string_record in record_iterator:
         try:
             example = tf.train.Example()
