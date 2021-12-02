@@ -47,7 +47,7 @@ def read_tfrecords_and_make_csv(tfrecord_filename):
             error += 1
     del record_iterator
 
-    with ThreadPoolExecutor(max_workers=32) as pool:
+    with ThreadPoolExecutor(max_workers=128) as pool:
         id_list = list(pool.map(get_id_from_url, id_url_list))
 
     with open(output_path, 'w') as wf:
@@ -58,6 +58,10 @@ def read_tfrecords_and_make_csv(tfrecord_filename):
 
             wf.write('{},{},{}\n'.format(str(temp_id), str(id), '|'.join(labels)))
             succeed += 1
+
+    if succeed <= 0:
+        pass
+
     del temp_id_list
     del id_url_list
     del labels_list
