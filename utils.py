@@ -1,3 +1,5 @@
+import gc
+
 import dill
 import torch
 
@@ -23,3 +25,11 @@ def get_topk_classes(preds, topk=5):
     pred_classes = preds.topk(k=topk).indices
 
     return pred_classes
+
+
+def clear_memory():
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+    gc.collect(generation=0)
+    gc.collect(generation=1)
+    gc.collect(generation=2)

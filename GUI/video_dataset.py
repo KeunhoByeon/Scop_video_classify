@@ -1,5 +1,4 @@
 import torch
-from pytorchvideo.data.encoded_video import EncodedVideo
 from pytorchvideo.transforms import (ApplyTransformToKey, ShortSideScale, UniformTemporalSubsample)
 from torchvision.transforms import Compose, Lambda
 from torchvision.transforms._transforms_video import (CenterCropVideo, NormalizeVideo, )
@@ -40,7 +39,6 @@ class VideoClassificationData():
 
         clip_duration = (self.num_frames * sampling_rate) / frames_per_second
         end_sec = start_sec + clip_duration
-
         video_data = video.get_clip(start_sec=start_sec, end_sec=end_sec)
         video_data = self.transform(video_data)
 
