@@ -1,5 +1,15 @@
 import numpy as np
 import torch
+
+def script_method(fn, _rcb=None):
+    return fn
+def script(obj, optimize=True, _frames_up=0, _rcb=None):
+    return obj
+import torch.jit
+torch.jit.script_method = script_method
+torch.jit.script = script
+
+import pytorchvideo.models
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QFileDialog, QMessageBox, QLineEdit, QPushButton, QLabel, QListWidget, QTextBrowser, QProgressBar, QAction, QInputDialog, qApp
 from pytorchvideo.data.encoded_video import EncodedVideo
